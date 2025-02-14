@@ -89,22 +89,21 @@ void UpdateGame() {
     if (IsKeyPressed('P'))
         pause = !pause;
 
-    if (!pause) {
+    if (pause) return;
 
-        if (IsKeyDown(KEY_LEFT))
-            player.position.x -= 5;
-        if ((player.position.x - player.size.x / 2) <= 0)
-            player.position.x = player.size.x / 2;
-        if (IsKeyDown(KEY_RIGHT))
-            player.position.x += 5;
-        if ((player.position.x + player.size.x / 2) >= screenWidth)
-            player.position.x = screenWidth - player.size.x / 2;
+    if (IsKeyDown(KEY_LEFT))
+        player.position.x -= 5;
+    if ((player.position.x - player.size.x / 2) <= 0)
+        player.position.x = player.size.x / 2;
+    if (IsKeyDown(KEY_RIGHT))
+        player.position.x += 5;
+    if ((player.position.x + player.size.x / 2) >= screenWidth)
+        player.position.x = screenWidth - player.size.x / 2;
 
-        // ball launching logic
-        if (!ball.active) {
-            ball.active = true;
-            ball.speed = (Vector2){0, -5};
-        }
+    // ball launching logic
+    if (!ball.active) {
+        ball.active = true;
+        ball.speed = (Vector2){0, -5};
     }
 
     // ball movement logic
@@ -136,44 +135,44 @@ void UpdateGame() {
         }
     }
 
-// Collision logic: ball vs bricks
-            for (int i = 0; i < LINES_OF_BRICKS; i++)
+    // Collision logic: ball vs bricks
+    for (int i = 0; i < LINES_OF_BRICKS; i++)
+    {
+        for (int j = 0; j < BRICKS_PER_LINE; j++)
+        {
+            if (brick[i][j].active)
             {
-                for (int j = 0; j < BRICKS_PER_LINE; j++)
+                // Hit below
+                if (((ball.position.y - ball.radius) <= (brick[i][j].position.y + brickSize.y / 2)) && ((ball.position.y - ball.radius) > (brick[i][j].position.y + brickSize.y / 2 + ball.speed.y)) && ((fabs(ball.position.x - brick[i][j].position.x)) < (brickSize.x / 2 + ball.radius * 2 / 3)) && (ball.speed.y < 0))
                 {
-                    if (brick[i][j].active)
-                    {
-                        // Hit below
-                        if (((ball.position.y - ball.radius) <= (brick[i][j].position.y + brickSize.y / 2)) && ((ball.position.y - ball.radius) > (brick[i][j].position.y + brickSize.y / 2 + ball.speed.y)) && ((fabs(ball.position.x - brick[i][j].position.x)) < (brickSize.x / 2 + ball.radius * 2 / 3)) && (ball.speed.y < 0))
-                        {
-                            brick[i][j].active = false;
-                            ball.speed.y *= -1;
-                            score++;
-                        }
-                        // Hit above
-                        else if (((ball.position.y + ball.radius) >= (brick[i][j].position.y - brickSize.y / 2)) && ((ball.position.y + ball.radius) < (brick[i][j].position.y - brickSize.y / 2 + ball.speed.y)) && ((fabs(ball.position.x - brick[i][j].position.x)) < (brickSize.x / 2 + ball.radius * 2 / 3)) && (ball.speed.y > 0))
-                        {
-                            brick[i][j].active = false;
-                            ball.speed.y *= -1;
-                            score++;
-                        }
-                        // Hit left
-                        else if (((ball.position.x + ball.radius) >= (brick[i][j].position.x - brickSize.x / 2)) && ((ball.position.x + ball.radius) < (brick[i][j].position.x - brickSize.x / 2 + ball.speed.x)) && ((fabs(ball.position.y - brick[i][j].position.y)) < (brickSize.y / 2 + ball.radius * 2 / 3)) && (ball.speed.x > 0))
-                        {
-                            brick[i][j].active = false;
-                            ball.speed.x *= -1;
-                            score++;
-                        }
-                        // Hit right
-                        else if (((ball.position.x - ball.radius) <= (brick[i][j].position.x + brickSize.x / 2)) && ((ball.position.x - ball.radius) > (brick[i][j].position.x + brickSize.x / 2 + ball.speed.x)) && ((fabs(ball.position.y - brick[i][j].position.y)) < (brickSize.y / 2 + ball.radius * 2 / 3)) && (ball.speed.x < 0))
-                        {
-                            brick[i][j].active = false;
-                            ball.speed.x *= -1;
-                            score++;
-                        }
-                    }
+                    brick[i][j].active = false;
+                    ball.speed.y *= -1;
+                    score++;
+                }
+                // Hit above
+                else if (((ball.position.y + ball.radius) >= (brick[i][j].position.y - brickSize.y / 2)) && ((ball.position.y + ball.radius) < (brick[i][j].position.y - brickSize.y / 2 + ball.speed.y)) && ((fabs(ball.position.x - brick[i][j].position.x)) < (brickSize.x / 2 + ball.radius * 2 / 3)) && (ball.speed.y > 0))
+                {
+                    brick[i][j].active = false;
+                    ball.speed.y *= -1;
+                    score++;
+                }
+                // Hit left
+                else if (((ball.position.x + ball.radius) >= (brick[i][j].position.x - brickSize.x / 2)) && ((ball.position.x + ball.radius) < (brick[i][j].position.x - brickSize.x / 2 + ball.speed.x)) && ((fabs(ball.position.y - brick[i][j].position.y)) < (brickSize.y / 2 + ball.radius * 2 / 3)) && (ball.speed.x > 0))
+                {
+                    brick[i][j].active = false;
+                    ball.speed.x *= -1;
+                    score++;
+                }
+                // Hit right
+                else if (((ball.position.x - ball.radius) <= (brick[i][j].position.x + brickSize.x / 2)) && ((ball.position.x - ball.radius) > (brick[i][j].position.x + brickSize.x / 2 + ball.speed.x)) && ((fabs(ball.position.y - brick[i][j].position.y)) < (brickSize.y / 2 + ball.radius * 2 / 3)) && (ball.speed.x < 0))
+                {
+                    brick[i][j].active = false;
+                    ball.speed.x *= -1;
+                    score++;
                 }
             }
+        }
+    }
 
     if (player.life <= 0)
         gameOver = true;
