@@ -26,8 +26,8 @@ struct Brick {
     bool active;
 };
 
-int const screenWidth = 800;
-int const screenHeight = 450;
+int const screenWidth = 1150;
+int const screenHeight = 650;
 
 bool isMenu = true;
 bool gameOver = false;
@@ -79,7 +79,7 @@ void InitGame(void) {
     for (int i = 0; i < LINES_OF_BRICKS; i++) {
         for (int j = 0; j < BRICKS_PER_LINE; j++) {
             brick[i][j].position =
-                (Vector2){j * brickSize.x / 2, i * brickSize.y + brickSize.y / 2};
+                (Vector2){j * brickSize.x + brickSize.x / 2, i * brickSize.y + brickSize.y / 2};
             brick[i][j].active = true;
         }
     }
@@ -136,22 +136,44 @@ void UpdateGame() {
         }
     }
 
-    if (ball.x - ball.radius < player.x + player.width &&ball.x + ball.radius > player.x &&ball.y - ball.radius < player.y + player.height &&ball.y + ball.radius > player.y)
-         
-    {
-          // Calculate collision angle
-          const collisionAngle = Math.atan2(
-            ball.y - (player.y + player.height / 2),
-            ball.x - (player.x + player.width / 2),
-          );
-
-          // Calculate new ball direction based on collision angle
-          const speed = Math.sqrt(ball.dx * ball.dx + ball.dy * ball.dy);
-          ball.dx = speed * Math.cos(collisionAngle);
-          ball.dy = speed * Math.sin(collisionAngle);
-        }
-
-
+// Collision logic: ball vs bricks
+            for (int i = 0; i < LINES_OF_BRICKS; i++)
+            {
+                for (int j = 0; j < BRICKS_PER_LINE; j++)
+                {
+                    if (brick[i][j].active)
+                    {
+                        // Hit below
+                        if (((ball.position.y - ball.radius) <= (brick[i][j].position.y + brickSize.y / 2)) && ((ball.position.y - ball.radius) > (brick[i][j].position.y + brickSize.y / 2 + ball.speed.y)) && ((fabs(ball.position.x - brick[i][j].position.x)) < (brickSize.x / 2 + ball.radius * 2 / 3)) && (ball.speed.y < 0))
+                        {
+                            brick[i][j].active = false;
+                            ball.speed.y *= -1;
+                            score++;
+                        }
+                        // Hit above
+                        else if (((ball.position.y + ball.radius) >= (brick[i][j].position.y - brickSize.y / 2)) && ((ball.position.y + ball.radius) < (brick[i][j].position.y - brickSize.y / 2 + ball.speed.y)) && ((fabs(ball.position.x - brick[i][j].position.x)) < (brickSize.x / 2 + ball.radius * 2 / 3)) && (ball.speed.y > 0))
+                        {
+                            brick[i][j].active = false;
+                            ball.speed.y *= -1;
+                            score++;
+                        }
+                        // Hit left
+                        else if (((ball.position.x + ball.radius) >= (brick[i][j].position.x - brickSize.x / 2)) && ((ball.position.x + ball.radius) < (brick[i][j].position.x - brickSize.x / 2 + ball.speed.x)) && ((fabs(ball.position.y - brick[i][j].position.y)) < (brickSize.y / 2 + ball.radius * 2 / 3)) && (ball.speed.x > 0))
+                        {
+                            brick[i][j].active = false;
+                            ball.speed.x *= -1;
+                            score++;
+                        }
+                        // Hit right
+                        else if (((ball.position.x - ball.radius) <= (brick[i][j].position.x + brickSize.x / 2)) && ((ball.position.x - ball.radius) > (brick[i][j].position.x + brickSize.x / 2 + ball.speed.x)) && ((fabs(ball.position.y - brick[i][j].position.y)) < (brickSize.y / 2 + ball.radius * 2 / 3)) && (ball.speed.x < 0))
+                        {
+                            brick[i][j].active = false;
+                            ball.speed.x *= -1;
+                            score++;
+                        }
+                    }
+                }
+            }
 
     if (player.life <= 0)
         gameOver = true;
@@ -185,7 +207,7 @@ void DrawGame()
     if (isMenu)
     {
         ClearBackground(BLUE);
-        DrawText("ARKAN0ID: 2D Classic GAME", GetScreenWidth() / 2 - 150, GetScreenHeight() / 2, 50, BLACK);
+        DrawText("ARKAN0ID: 2D Classic GAME", GetScreenWidth() / 2 - 350, GetScreenHeight() / 2 - 50, 50, BLACK);
         DrawText("Press ENTER to start the GAME", 50, screenHeight - 150, 20, BLACK);
         DrawText("Press P to pause the GAME", 50, screenHeight - 125, 20, BLACK);
         DrawText("Press M to return to MENU", 50, screenHeight - 100, 20, BLACK);
