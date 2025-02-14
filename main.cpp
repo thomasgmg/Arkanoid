@@ -5,7 +5,7 @@
 
 int const PLAYER_MAX_LIFE = 5;
 int const LINES_OF_BRICKS = 7;
-int const BRICKS_PER_LINE = 20;
+int const BRICKS_PER_LINE = 14;
 #define BG CLITERAL(Color) { 0, 4, 53, 255}
 
 struct Player {
@@ -125,7 +125,7 @@ void UpdateGame() {
         player.life--;
     }
 
-
+    // Check collision between ball and player
     if (CheckCollisionCircleRec(ball.position, ball.radius, (Rectangle) {player.position.x - player.size.x / 2, player.position.y - player.size.y / 2, player.size.x, player.size.y}))
     {
         if (ball.speed.y > 0)
@@ -143,28 +143,40 @@ void UpdateGame() {
             if (brick[i][j].active)
             {
                 // Hit below
-                if (((ball.position.y - ball.radius) <= (brick[i][j].position.y + brickSize.y / 2)) && ((ball.position.y - ball.radius) > (brick[i][j].position.y + brickSize.y / 2 + ball.speed.y)) && ((fabs(ball.position.x - brick[i][j].position.x)) < (brickSize.x / 2 + ball.radius * 2 / 3)) && (ball.speed.y < 0))
+                if (((ball.position.y - ball.radius) <= (brick[i][j].position.y + brickSize.y / 2))
+                    && ((ball.position.y - ball.radius) > (brick[i][j].position.y + brickSize.y / 2 + ball.speed.y)) 
+                    && ((fabs(ball.position.x - brick[i][j].position.x)) < (brickSize.x / 2 + ball.radius * 2 / 3)) 
+                    && (ball.speed.y < 0))
                 {
                     brick[i][j].active = false;
                     ball.speed.y *= -1;
                     score++;
                 }
                 // Hit above
-                else if (((ball.position.y + ball.radius) >= (brick[i][j].position.y - brickSize.y / 2)) && ((ball.position.y + ball.radius) < (brick[i][j].position.y - brickSize.y / 2 + ball.speed.y)) && ((fabs(ball.position.x - brick[i][j].position.x)) < (brickSize.x / 2 + ball.radius * 2 / 3)) && (ball.speed.y > 0))
+                else if (((ball.position.y + ball.radius) >= (brick[i][j].position.y - brickSize.y / 2)) 
+                    && ((ball.position.y + ball.radius) < (brick[i][j].position.y - brickSize.y / 2 + ball.speed.y)) 
+                    && ((fabs(ball.position.x - brick[i][j].position.x)) < (brickSize.x / 2 + ball.radius * 2 / 3)) 
+                    && (ball.speed.y > 0))
                 {
                     brick[i][j].active = false;
                     ball.speed.y *= -1;
                     score++;
                 }
                 // Hit left
-                else if (((ball.position.x + ball.radius) >= (brick[i][j].position.x - brickSize.x / 2)) && ((ball.position.x + ball.radius) < (brick[i][j].position.x - brickSize.x / 2 + ball.speed.x)) && ((fabs(ball.position.y - brick[i][j].position.y)) < (brickSize.y / 2 + ball.radius * 2 / 3)) && (ball.speed.x > 0))
+                else if (((ball.position.x + ball.radius) >= (brick[i][j].position.x - brickSize.x / 2)) 
+                    && ((ball.position.x + ball.radius) < (brick[i][j].position.x - brickSize.x / 2 + ball.speed.x)) 
+                    && ((fabs(ball.position.y - brick[i][j].position.y)) < (brickSize.y / 2 + ball.radius * 2 / 3)) 
+                    && (ball.speed.x > 0))
                 {
                     brick[i][j].active = false;
                     ball.speed.x *= -1;
                     score++;
                 }
                 // Hit right
-                else if (((ball.position.x - ball.radius) <= (brick[i][j].position.x + brickSize.x / 2)) && ((ball.position.x - ball.radius) > (brick[i][j].position.x + brickSize.x / 2 + ball.speed.x)) && ((fabs(ball.position.y - brick[i][j].position.y)) < (brickSize.y / 2 + ball.radius * 2 / 3)) && (ball.speed.x < 0))
+                else if (((ball.position.x - ball.radius) <= (brick[i][j].position.x + brickSize.x / 2)) 
+                    && ((ball.position.x - ball.radius) > (brick[i][j].position.x + brickSize.x / 2 + ball.speed.x)) 
+                    && ((fabs(ball.position.y - brick[i][j].position.y)) < (brickSize.y / 2 + ball.radius * 2 / 3)) 
+                    && (ball.speed.x < 0))
                 {
                     brick[i][j].active = false;
                     ball.speed.x *= -1;
@@ -189,7 +201,6 @@ void UpdateGame() {
             }
         }
     }
-
 
     if (IsKeyPressed(KEY_ENTER))
     {
