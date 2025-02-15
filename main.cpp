@@ -3,9 +3,12 @@
 #include <stdlib.h>
 #include <math.h>
 
-int const PLAYER_MAX_LIFE = 5;
-int const LINES_OF_BRICKS = 7;
-int const BRICKS_PER_LINE = 14;
+
+Font font;
+        
+int const PLAYER_MAX_LIFE = 3;
+int const LINES_OF_BRICKS = 6;
+int const BRICKS_PER_LINE = 10;
 #define BG CLITERAL(Color) { 0, 4, 53, 255}
 
 struct Player {
@@ -48,6 +51,7 @@ int main() {
     InitWindow(screenWidth, screenHeight, "classic game: arkanoid");
     InitGame();
     SetTargetFPS(60);
+    font = LoadFontEx("resources/font.ttf", 96, 0, 0);
     while (!WindowShouldClose()) {
         if (isMenu) {
             if (IsKeyPressed(KEY_ENTER))
@@ -63,7 +67,7 @@ int main() {
 }
 
 void InitGame(void) {
-    brickSize = (Vector2){GetScreenWidth() / (float)BRICKS_PER_LINE, 30};
+    brickSize = (Vector2){GetScreenWidth() / (float)BRICKS_PER_LINE, 40};
 
     player.position =
         (Vector2){(float)screenWidth / 2, (float)screenHeight * 7 / 8};
@@ -71,9 +75,9 @@ void InitGame(void) {
     player.life = PLAYER_MAX_LIFE;
 
     ball.position =
-        (Vector2){(float)screenWidth / 2, (float)screenHeight * 7 / 8 - 30};
+        (Vector2){player.position.x, player.position.y - 30};
     ball.speed = (Vector2){0, 0};
-    ball.radius = 7;
+    ball.radius = 10;
     ball.active = false;
 
     for (int i = 0; i < LINES_OF_BRICKS; i++) {
@@ -89,22 +93,27 @@ void UpdateGame() {
     if (IsKeyPressed('P'))
         pause = !pause;
 
-    if (pause) return;
-
-    if (IsKeyDown(KEY_LEFT))
-        player.position.x -= 5;
-    if ((player.position.x - player.size.x / 2) <= 0)
-        player.position.x = player.size.x / 2;
-    if (IsKeyDown(KEY_RIGHT))
-        player.position.x += 5;
-    if ((player.position.x + player.size.x / 2) >= screenWidth)
-        player.position.x = screenWidth - player.size.x / 2;
-
     // ball launching logic
-    if (!ball.active) {
+    if (IsKeyPressed(KEY_SPACE) && !ball.active)
+    {
         ball.active = true;
         ball.speed = (Vector2){0, -5};
     }
+
+    if (pause || !ball.active) return;
+
+    if (IsKeyDown(KEY_LEFT))
+        player.position.x -= 9;
+
+    if ((player.position.x - player.size.x / 2) <= 0)
+        player.position.x = player.size.x / 2;
+
+    if (IsKeyDown(KEY_RIGHT))
+        player.position.x += 9;
+
+    if ((player.position.x + player.size.x / 2) >= screenWidth)
+        player.position.x = screenWidth - player.size.x / 2;
+
 
     // ball movement logic
     if (ball.active) {
@@ -114,13 +123,16 @@ void UpdateGame() {
         ball.position = (Vector2){player.position.x, (float)screenHeight * 7 / 8 - 30};
     }
 
+    //Collision: ball vs walls
     if (((ball.position.x + ball.radius) >= screenWidth) ||
         ((ball.position.x - ball.radius) <= 0))
         ball.speed.x *= -1;
     if ((ball.position.y - ball.radius) <= 0)
         ball.speed.y *= -1;
-    if ((ball.position.y + ball.radius) >= screenHeight) {
+    if ((ball.position.y + ball.radius) >= screenHeight) 
+    {
         ball.speed = (Vector2){0, 0};
+        ball.position = (Vector2){player.position.x, player.position.y - 30};
         ball.active = false;
         player.life--;
     }
@@ -217,11 +229,12 @@ void DrawGame()
     if (isMenu)
     {
         ClearBackground(BLUE);
-        DrawText("ARKAN0ID: 2D Classic GAME", GetScreenWidth() / 2 - 350, GetScreenHeight() / 2 - 50, 50, BLACK);
-        DrawText("Press ENTER to start the GAME", 50, screenHeight - 150, 20, BLACK);
-        DrawText("Press P to pause the GAME", 50, screenHeight - 125, 20, BLACK);
-        DrawText("Press M to return to MENU", 50, screenHeight - 100, 20, BLACK);
-        DrawText("Press ESC to exit the GAME", 50, screenHeight - 75, 20, BLACK);
+        // RLAPI void DrawTextEx(Font font, const char *text, Vector2 position, float fontSize, float spacing, Color tint); // Draw text using font and additional parameters
+        DrawTextEx(font, "ARKAN0ID: 2D Classic GAME", (Vector2){(float)GetScreenWidth() / 2 - 300, (float)GetScreenHeight() / 2 - 50}, 50, 0, BLACK);
+        DrawTextEx(font, "Press ENTER to start the GAME", (Vector2){(float)GetScreenWidth() / 2 - 140, screenHeight - 170}, 20, 0, BLACK);
+        DrawTextEx(font, "Press P to pause the GAME", (Vector2){(float)GetScreenWidth() / 2 - 140, screenHeight - 145}, 20, 0, BLACK);
+        DrawTextEx(font, "Press M to return to MENU", (Vector2){(float)GetScreenWidth() / 2 - 140, screenHeight - 120}, 20, 0, BLACK);
+        DrawTextEx(font, "Press ESC to exit the GAME", (Vector2){(float)GetScreenWidth() / 2 - 140, screenHeight - 95}, 20, 0, BLACK);
     }
     else
 {
