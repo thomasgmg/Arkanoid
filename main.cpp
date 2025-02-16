@@ -60,17 +60,11 @@ void DrawHeart(Vector2 position, float size, Color color) {
   Vector2 v1 = {position.x - radius * 1.5f, position.y + radius / 3};
   Vector2 v2 = {position.x + radius * 1.5f, position.y + radius / 3};
 
-  DrawTriangle((Vector2){100, 635},
-               (Vector2){100 + 15, 615},
-               (Vector2){100 - 15, 615}, RED);
+  DrawTriangle(bottomTip, v2, v1, RED);
 
-  DrawTriangle((Vector2){60, 635},
-               (Vector2){60 + 15, 615},
-               (Vector2){60 - 15, 615}, RED);
-
-  DrawTriangle((Vector2){20, 635},
-               (Vector2){20 + 15, 615},
-               (Vector2){20 - 15, 615}, RED);
+  // DrawTriangle((Vector2){100, 635},
+  //              (Vector2){100 + 15, 615},
+  //              (Vector2){100 - 15, 615}, RED);
 
   DrawCircleV(leftCircle, radius, color);
   DrawCircleV(rightCircle, radius, color);
@@ -78,8 +72,7 @@ void DrawHeart(Vector2 position, float size, Color color) {
 }
 
 // Function to draw player lives as hearts
-void DrawLivesAsHearts(int life, const float screenWidth,
-                       const float screenHeight) {
+void DrawLivesAsHearts(int life, const float screenWidth, const float screenHeight) {
   float spacing = 40.0f;
 
   for (int i = 0; i < life; i++) {
@@ -277,17 +270,23 @@ void DrawGame() {
                          (float)GetScreenHeight() / 2 - 50},
                50, 0, BLACK);
     DrawTextEx(font, "Press ENTER to start the GAME",
-               (Vector2){(float)GetScreenWidth() / 2 - 140, screenHeight - 170},
-               20, 0, BLACK);
+               (Vector2){(float)GetScreenWidth() / 2 - 170, screenHeight - 260},
+               25, 0, BLACK);
+    DrawTextEx(font, "-press <Space> to begin",
+               (Vector2){(float)GetScreenWidth() / 2 - 140, screenHeight - 240},
+               22, 0, BLACK);
+    DrawTextEx(font, "-use arrows to move",
+               (Vector2){(float)GetScreenWidth() / 2 - 140, screenHeight - 220},
+               22, 0, BLACK);
     DrawTextEx(font, "Press P to pause the GAME",
-               (Vector2){(float)GetScreenWidth() / 2 - 140, screenHeight - 145},
-               20, 0, BLACK);
+               (Vector2){(float)GetScreenWidth() / 2 - 170, screenHeight - 195},
+               25, 0, BLACK);
     DrawTextEx(font, "Press M to return to MENU",
-               (Vector2){(float)GetScreenWidth() / 2 - 140, screenHeight - 120},
-               20, 0, BLACK);
+               (Vector2){(float)GetScreenWidth() / 2 - 170, screenHeight - 165},
+               25, 0, BLACK);
     DrawTextEx(font, "Press ESC to exit the GAME",
-               (Vector2){(float)GetScreenWidth() / 2 - 140, screenHeight - 95},
-               20, 0, BLACK);
+               (Vector2){(float)GetScreenWidth() / 2 - 170, screenHeight - 135},
+               25, 0, BLACK);
   } else {
 
     ClearBackground(BG);
@@ -315,8 +314,10 @@ void DrawGame() {
         DrawText("GAME PAUSED",
                  screenWidth / 2 - MeasureText("GAME PAUSED", 40) / 2,
                  screenHeight / 2 - 40, 40, WHITE);
-    } else {
-      if (score != (LINES_OF_BRICKS * BRICKS_PER_LINE)) {
+    } 
+    //game over
+    else {
+      if (score != (LINES_OF_BRICKS * BRICKS_PER_LINE) || gameOver) {
         DrawText("PRESS [ENTER] TO PLAY AGAIN",
                  GetScreenWidth() / 2 -
                      MeasureText("PRESS [ESC..] TO PLAY AGAIN", 20) / 2,
