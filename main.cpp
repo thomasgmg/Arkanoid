@@ -1,5 +1,6 @@
 #include "raylib.h"
 
+#include <ctime>
 #include <math.h>
 #include <stdlib.h>
 
@@ -90,6 +91,7 @@ void DrawLivesAsHearts(int life, const float screenWidth, const float screenHeig
 
 int main()
 {
+    srand(time(0));
     InitWindow(screenWidth, screenHeight, "classic game: arkanoid");
     InitGame();
     SetTargetFPS(60);
