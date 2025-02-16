@@ -102,6 +102,8 @@ int main() {
 }
 
 void InitGame(void) {
+  score = 0;
+
   brickSize = (Vector2){GetScreenWidth() / (float)BRICKS_PER_LINE, 40};
 
   player.position =
@@ -133,7 +135,7 @@ void UpdateGame() {
     ball.speed = (Vector2){0, -5};
   }
 
-  if (pause || !ball.active)
+  if (pause || (!ball.active && !gameOver))
     return;
 
   if (IsKeyDown(KEY_LEFT))
@@ -316,47 +318,53 @@ void DrawGame() {
                  screenHeight / 2 - 40, 40, WHITE);
     } 
     //game over
-    else {
-      if (score != (LINES_OF_BRICKS * BRICKS_PER_LINE) || gameOver) {
-        DrawText("PRESS [ENTER] TO PLAY AGAIN",
-                 GetScreenWidth() / 2 -
+    else 
+    {
+       if (score != (LINES_OF_BRICKS * BRICKS_PER_LINE) || gameOver) 
+            {
+            DrawText("PRESS [ENTER] TO PLAY AGAIN",
+                    GetScreenWidth() / 2 -
                      MeasureText("PRESS [ESC..] TO PLAY AGAIN", 20) / 2,
-                 GetScreenHeight() / 4 * 3 - 50, 20, WHITE);
-        DrawText("PRESS [ESC] TO EXIT the GAME",
-                 GetScreenWidth() / 2 -
+                    GetScreenHeight() / 4 * 3 - 50, 20, WHITE);
+            DrawText("PRESS [ESC] TO EXIT the GAME",
+                    GetScreenWidth() / 2 -
                      MeasureText("PRESS [ESC..] TO PLAY AGAIN", 20) / 2,
-                 GetScreenHeight() / 4 * 3, 20, WHITE);
-        // Draw Scoreboard
-        DrawText(TextFormat("SCORE%4i", score),
-                 GetScreenWidth() / 2 - MeasureText("SCORE", 40), 50, 50,
-                 WHITE);
-      } else {
-        DrawText("PRESS [ENTER] TO PLAY AGAIN",
-                 GetScreenWidth() / 2 -
+                    GetScreenHeight() / 4 * 3, 20, WHITE);
+            // Draw Scoreboard
+            DrawText(TextFormat("SCORE%4i", score),
+                    GetScreenWidth() / 2 - MeasureText("SCORE", 40), 50, 50,
+                    WHITE);
+            }
+            else
+            {
+            DrawText("PRESS [ENTER] TO PLAY AGAIN",
+                    GetScreenWidth() / 2 -
                      MeasureText("PRESS [ESC..] TO PLAY AGAIN", 20) / 2,
-                 GetScreenHeight() / 4 * 3 - 50, 20, WHITE);
-        DrawText("PRESS [ESC] TO EXIT the GAME",
-                 GetScreenWidth() / 2 -
+                    GetScreenHeight() / 4 * 3 - 50, 20, WHITE);
+            DrawText("PRESS [ESC] TO EXIT the GAME",
+                    GetScreenWidth() / 2 -
                      MeasureText("PRESS [ESC..] TO PLAY AGAIN", 20) / 2,
-                 GetScreenHeight() / 4 * 3, 20, WHITE);
-        // Draw Scoreboard
-        DrawText(TextFormat("CONGRATULATIONS"), GetScreenWidth() / 2 - 250, 50,
-                 50, WHITE);
-        DrawText("You Earned the Highest Score!", GetScreenWidth() / 2 - 230,
-                 100, 30, WHITE);
-      }
+                    GetScreenHeight() / 4 * 3, 20, WHITE);
+            // Draw Scoreboard
+            DrawText(TextFormat("CONGRATULATIONS"), GetScreenWidth() / 2 - 250, 50,
+                    50, WHITE);
+            DrawText("You Earned the Highest Score!", GetScreenWidth() / 2 - 230,
+                    100, 30, WHITE);
+            }
+        }
     }
-  }
   EndDrawing();
 }
 
 // Update and Draw (one frame)
-void UpdateDrawFrame() {
+void UpdateDrawFrame()
+{
   UpdateGame();
   DrawGame();
 }
 
-void UnloadBricks() {
+void UnloadBricks() 
+    {
   for (int i = 0; i < LINES_OF_BRICKS; i++) {
     for (int j = 0; j < BRICKS_PER_LINE; j++) {
       if (brick[i][j].active) {
