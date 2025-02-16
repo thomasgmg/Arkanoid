@@ -10,6 +10,8 @@ int const PLAYER_MAX_LIFE = 3;
 int const LINES_OF_BRICKS = 6;
 int const BRICKS_PER_LINE = 10;
 #define BG CLITERAL(Color){0, 4, 53, 255}
+#define MAX_STARS 25
+Vector2 stars[MAX_STARS];
 
 struct Player
 {
@@ -118,16 +120,22 @@ void InitGame(void)
 {
     score = 0;
 
+    for (int i = 0; i <MAX_STARS; i++)
+    {
+        stars[i].x = GetRandomValue(0, screenWidth);
+        stars[i].y = GetRandomValue(0, screenWidth);
+    }
+
     brickSize = (Vector2){GetScreenWidth() / (float)BRICKS_PER_LINE, 40};
 
     player.position = (Vector2){(float)screenWidth / 2, (float)screenHeight * 7 / 8};
-    player.size = (Vector2){(float)screenWidth / 10, 20};
+    player.size = (Vector2){(float)screenWidth / 8, 25};
     player.life = PLAYER_MAX_LIFE;
 
     initialBallX = (float)GetRandomValue(150, 1000);
     ball.position = (Vector2){initialBallX, player.position.y - 300};
     ball.speed = (Vector2){0, 0};
-    ball.radius = 10;
+    ball.radius = 12;
     ball.active = false;
 
     for (int i = 0; i < LINES_OF_BRICKS; i++)
@@ -150,7 +158,7 @@ void UpdateGame()
     {
         ball.active = true;
         // ball.position = (Vector2){initialBallX, player.position.y - 300};
-        ball.speed = (Vector2){0, 5};
+        ball.speed = (Vector2){0, 6.5};
     }
 
     if (pause || (!ball.active && !gameOver))
@@ -186,15 +194,6 @@ void UpdateGame()
         ball.speed.y *= -1;
     if ((ball.position.y + ball.radius) >= screenHeight)
     {
-        //ball.speed = (Vector2){0, 0};
-        //ball.position = (Vector2){(float)GetRandomValue(150, 1000), player.position.y - 300};
-        //ball.active = false;
-        //player.life--;
-
-        //if (ball.active)
-        //{
-        //   ball.speed = (Vector2){0, 5};
-        //}
         ball.speed = (Vector2){0, 0};
         ball.position = (Vector2){(float)GetRandomValue(150, 1000), player.position.y - 300};
 
@@ -205,7 +204,7 @@ void UpdateGame()
     if(IsKeyPressed(KEY_SPACE) && !ball.active)
     {
         ball.active = true;
-        ball.speed = (Vector2){0, 5};
+        ball.speed = (Vector2){0, 4.5};
 
     }
 
@@ -327,6 +326,11 @@ void DrawGame()
     {
 
         ClearBackground(BG);
+
+        for (int i = 0; i < MAX_STARS; i++)
+        {
+            DrawCircleV(stars[i], GetRandomValue(1, 3), WHITE);
+        }
 
         if (!gameOver)
         {
