@@ -1,4 +1,4 @@
-### **Akranoid**  
+### **Arkanoid**
 *A simple raylib-based game*
 
 #### **Description**  
