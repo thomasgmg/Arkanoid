@@ -42,6 +42,7 @@ Player player = {0};
 Ball ball = {0};
 Brick brick[LINES_OF_BRICKS][BRICKS_PER_LINE] = {0};
 Vector2 brickSize = {0};
+float initialBallX;
 
 void InitGame();
 void UpdateGame();
@@ -121,7 +122,8 @@ void InitGame(void)
     player.size = (Vector2){(float)screenWidth / 10, 20};
     player.life = PLAYER_MAX_LIFE;
 
-    ball.position = (Vector2){player.position.x, player.position.y - 30};
+    initialBallX = (float)GetRandomValue(150, 1000);
+    ball.position = (Vector2){initialBallX, player.position.y - 300};
     ball.speed = (Vector2){0, 0};
     ball.radius = 10;
     ball.active = false;
@@ -145,7 +147,8 @@ void UpdateGame()
     if (IsKeyPressed(KEY_SPACE) && !ball.active)
     {
         ball.active = true;
-        ball.speed = (Vector2){0, -5};
+        // ball.position = (Vector2){initialBallX, player.position.y - 300};
+        ball.speed = (Vector2){0, 5};
     }
 
     if (pause || (!ball.active && !gameOver))
@@ -181,10 +184,27 @@ void UpdateGame()
         ball.speed.y *= -1;
     if ((ball.position.y + ball.radius) >= screenHeight)
     {
+        //ball.speed = (Vector2){0, 0};
+        //ball.position = (Vector2){(float)GetRandomValue(150, 1000), player.position.y - 300};
+        //ball.active = false;
+        //player.life--;
+
+        //if (ball.active)
+        //{
+        //   ball.speed = (Vector2){0, 5};
+        //}
         ball.speed = (Vector2){0, 0};
-        ball.position = (Vector2){player.position.x, player.position.y - 30};
+        ball.position = (Vector2){(float)GetRandomValue(150, 1000), player.position.y - 300};
+
         ball.active = false;
         player.life--;
+    }
+
+    if(IsKeyPressed(KEY_SPACE) && !ball.active)
+    {
+        ball.active = true;
+        ball.speed = (Vector2){0, 5};
+
     }
 
     // Check collision between ball and player
