@@ -7,8 +7,8 @@
 Font font;
 
 int const PLAYER_MAX_LIFE = 3;
-int const LINES_OF_BRICKS = 6;
-int const BRICKS_PER_LINE = 10;
+int const LINES_OF_BRICKS = 1;
+int const BRICKS_PER_LINE = 1;
 #define BG CLITERAL(Color){0, 4, 53, 255}
 #define MAX_STARS 25
 Vector2 stars[MAX_STARS];
@@ -359,18 +359,7 @@ void DrawGame()
         // game over
         else
         {
-            if (score != (LINES_OF_BRICKS * BRICKS_PER_LINE) || gameOver)
-            {
-                DrawText("PRESS [ENTER] TO PLAY AGAIN",
-                         GetScreenWidth() / 2 - MeasureText("PRESS [ESC..] TO PLAY AGAIN", 20) / 2,
-                         GetScreenHeight() / 4 * 3 - 50, 20, WHITE);
-                DrawText("PRESS [ESC] TO EXIT the GAME",
-                         GetScreenWidth() / 2 - MeasureText("PRESS [ESC..] TO PLAY AGAIN", 20) / 2,
-                         GetScreenHeight() / 4 * 3, 20, WHITE);
-                // Draw Scoreboard
-                DrawText(TextFormat("SCORE%4i", score), GetScreenWidth() / 2 - MeasureText("SCORE", 40), 50, 50, WHITE);
-            }
-            else
+            if (score >= (LINES_OF_BRICKS * BRICKS_PER_LINE))
             {
                 DrawText("PRESS [ENTER] TO PLAY AGAIN",
                          GetScreenWidth() / 2 - MeasureText("PRESS [ESC..] TO PLAY AGAIN", 20) / 2,
@@ -381,6 +370,17 @@ void DrawGame()
                 // Draw Scoreboard
                 DrawText(TextFormat("CONGRATULATIONS"), GetScreenWidth() / 2 - 250, 50, 50, WHITE);
                 DrawText("You Earned the Highest Score!", GetScreenWidth() / 2 - 230, 100, 30, WHITE);
+            }
+            else
+            {
+                DrawText("PRESS [ENTER] TO PLAY AGAIN",
+                         GetScreenWidth() / 2 - MeasureText("PRESS [ESC..] TO PLAY AGAIN", 20) / 2,
+                         GetScreenHeight() / 4 * 3 - 50, 20, WHITE);
+                DrawText("PRESS [ESC] TO EXIT the GAME",
+                         GetScreenWidth() / 2 - MeasureText("PRESS [ESC..] TO PLAY AGAIN", 20) / 2,
+                         GetScreenHeight() / 4 * 3, 20, WHITE);
+                // Draw Scoreboard
+                DrawText(TextFormat("SCORE%4i", score), GetScreenWidth() / 2 - MeasureText("SCORE", 40), 50, 50, WHITE);
             }
         }
     }
