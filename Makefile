@@ -2,7 +2,7 @@
 CC = g++
 CFLAGS = -Wall -Og -g -static-libgcc -static-libstdc++ -Iinclude/
 LDFLAGS_LINUX = lib/libraylib.a -lGL -lm -lpthread -ldl -lrt -lX11
-LDFLAGS_WINDOWS = lib/libraylib-win32.a -lopengl32 -lgdi32 -lwinmm
+LDFLAGS_WINDOWS = lib/libraylib-win64.a -lopengl32 -lgdi32 -lwinmm
 
 # Detect OS
 OS := $(shell uname -s)
