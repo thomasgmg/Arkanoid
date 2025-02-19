@@ -7,8 +7,8 @@
 Font font;
 
 int const PLAYER_MAX_LIFE = 3;
-int const LINES_OF_BRICKS = 1;
-int const BRICKS_PER_LINE = 1;
+int const LINES_OF_BRICKS = 6;
+int const BRICKS_PER_LINE = 10;
 #define BG CLITERAL(Color){0, 4, 53, 255}
 #define MAX_STARS 25
 Vector2 stars[MAX_STARS];
@@ -359,7 +359,7 @@ void DrawGame()
         // game over
         else
         {
-            if (score >= (LINES_OF_BRICKS * BRICKS_PER_LINE))
+            if (score == (LINES_OF_BRICKS * BRICKS_PER_LINE))
             {
                 DrawText("PRESS [ENTER] TO PLAY AGAIN",
                          GetScreenWidth() / 2 - MeasureText("PRESS [ESC..] TO PLAY AGAIN", 20) / 2,
