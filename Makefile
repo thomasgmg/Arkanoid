@@ -17,7 +17,7 @@ else
 endif
 
 # Source and output
-SRC = main.cpp
+SRC = main.cpp score.cpp
 OUT = arkanoid$(EXT)
 
 # Build

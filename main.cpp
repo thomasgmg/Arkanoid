@@ -230,7 +230,7 @@ void UpdateGame()
                 // Hit below
                 if (((ball.position.y - ball.radius) <= (brick[i][j].position.y + brickSize.y / 2)) &&
                     ((ball.position.y - ball.radius) > (brick[i][j].position.y + brickSize.y / 2 + ball.speed.y)) &&
-                    ((fabs(ball.position.x - brick[i][j].position.x)) < (brickSize.x / 2 + ball.radius * 2 / 3)) &&
+                    ((fabs(ball.position.x - brick[i][j].position.x)) < (brickSize.x / 2 + (float)ball.radius * 2 / 3)) &&
                     (ball.speed.y < 0))
                 {
                     brick[i][j].active = false;
@@ -241,7 +241,7 @@ void UpdateGame()
                 else if (((ball.position.y + ball.radius) >= (brick[i][j].position.y - brickSize.y / 2)) &&
                          ((ball.position.y + ball.radius) <
                           (brick[i][j].position.y - brickSize.y / 2 + ball.speed.y)) &&
-                         ((fabs(ball.position.x - brick[i][j].position.x)) < (brickSize.x / 2 + ball.radius * 2 / 3)) &&
+                         ((fabs(ball.position.x - brick[i][j].position.x)) < (brickSize.x / 2 + (float)ball.radius * 2 / 3)) &&
                          (ball.speed.y > 0))
                 {
                     brick[i][j].active = false;
@@ -252,7 +252,7 @@ void UpdateGame()
                 else if (((ball.position.x + ball.radius) >= (brick[i][j].position.x - brickSize.x / 2)) &&
                          ((ball.position.x + ball.radius) <
                           (brick[i][j].position.x - brickSize.x / 2 + ball.speed.x)) &&
-                         ((fabs(ball.position.y - brick[i][j].position.y)) < (brickSize.y / 2 + ball.radius * 2 / 3)) &&
+                         ((fabs(ball.position.y - brick[i][j].position.y)) < (brickSize.y / 2 + (float)ball.radius * 2 / 3)) &&
                          (ball.speed.x > 0))
                 {
                     brick[i][j].active = false;
@@ -263,7 +263,7 @@ void UpdateGame()
                 else if (((ball.position.x - ball.radius) <= (brick[i][j].position.x + brickSize.x / 2)) &&
                          ((ball.position.x - ball.radius) >
                           (brick[i][j].position.x + brickSize.x / 2 + ball.speed.x)) &&
-                         ((fabs(ball.position.y - brick[i][j].position.y)) < (brickSize.y / 2 + ball.radius * 2 / 3)) &&
+                         ((fabs(ball.position.y - brick[i][j].position.y)) < (brickSize.y / 2 + (float)ball.radius * 2 / 3)) &&
                          (ball.speed.x < 0))
                 {
                     brick[i][j].active = false;
@@ -342,7 +342,7 @@ void DrawGame()
             // Draw player lives
             for (int i = 0; i < player.life; i++)
             {
-                Vector2 heartPos = {(float)20 + 40 * i, screenHeight - 30};
+                // Vector2 heartPos = {(float)20 + 40 * i, screenHeight - 30};
                 DrawLivesAsHearts(player.life, GetScreenWidth(), GetScreenHeight());
             }
 
