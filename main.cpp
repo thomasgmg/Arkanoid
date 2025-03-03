@@ -120,7 +120,7 @@ void InitGame(void)
 {
     score = 0;
 
-    for (int i = 0; i <MAX_STARS; i++)
+    for (int i = 0; i < MAX_STARS; i++)
     {
         stars[i].x = GetRandomValue(0, screenWidth);
         stars[i].y = GetRandomValue(0, screenWidth);
@@ -201,11 +201,10 @@ void UpdateGame()
         player.life--;
     }
 
-    if(IsKeyPressed(KEY_SPACE) && !ball.active)
+    if (IsKeyPressed(KEY_SPACE) && !ball.active)
     {
         ball.active = true;
         ball.speed = (Vector2){0, 4.5};
-
     }
 
     // Check collision between ball and player
@@ -230,7 +229,8 @@ void UpdateGame()
                 // Hit below
                 if (((ball.position.y - ball.radius) <= (brick[i][j].position.y + brickSize.y / 2)) &&
                     ((ball.position.y - ball.radius) > (brick[i][j].position.y + brickSize.y / 2 + ball.speed.y)) &&
-                    ((fabs(ball.position.x - brick[i][j].position.x)) < (brickSize.x / 2 + (float)ball.radius * 2 / 3)) &&
+                    ((fabs(ball.position.x - brick[i][j].position.x)) <
+                     (brickSize.x / 2 + (float)ball.radius * 2 / 3)) &&
                     (ball.speed.y < 0))
                 {
                     brick[i][j].active = false;
@@ -241,7 +241,8 @@ void UpdateGame()
                 else if (((ball.position.y + ball.radius) >= (brick[i][j].position.y - brickSize.y / 2)) &&
                          ((ball.position.y + ball.radius) <
                           (brick[i][j].position.y - brickSize.y / 2 + ball.speed.y)) &&
-                         ((fabs(ball.position.x - brick[i][j].position.x)) < (brickSize.x / 2 + (float)ball.radius * 2 / 3)) &&
+                         ((fabs(ball.position.x - brick[i][j].position.x)) <
+                          (brickSize.x / 2 + (float)ball.radius * 2 / 3)) &&
                          (ball.speed.y > 0))
                 {
                     brick[i][j].active = false;
@@ -252,7 +253,8 @@ void UpdateGame()
                 else if (((ball.position.x + ball.radius) >= (brick[i][j].position.x - brickSize.x / 2)) &&
                          ((ball.position.x + ball.radius) <
                           (brick[i][j].position.x - brickSize.x / 2 + ball.speed.x)) &&
-                         ((fabs(ball.position.y - brick[i][j].position.y)) < (brickSize.y / 2 + (float)ball.radius * 2 / 3)) &&
+                         ((fabs(ball.position.y - brick[i][j].position.y)) <
+                          (brickSize.y / 2 + (float)ball.radius * 2 / 3)) &&
                          (ball.speed.x > 0))
                 {
                     brick[i][j].active = false;
@@ -263,7 +265,8 @@ void UpdateGame()
                 else if (((ball.position.x - ball.radius) <= (brick[i][j].position.x + brickSize.x / 2)) &&
                          ((ball.position.x - ball.radius) >
                           (brick[i][j].position.x + brickSize.x / 2 + ball.speed.x)) &&
-                         ((fabs(ball.position.y - brick[i][j].position.y)) < (brickSize.y / 2 + (float)ball.radius * 2 / 3)) &&
+                         ((fabs(ball.position.y - brick[i][j].position.y)) <
+                          (brickSize.y / 2 + (float)ball.radius * 2 / 3)) &&
                          (ball.speed.x < 0))
                 {
                     brick[i][j].active = false;
@@ -307,6 +310,8 @@ void DrawGame()
         // RLAPI void DrawTextEx(Font font, const char *text, Vector2 position,
         // float fontSize, float spacing, Color tint); // Draw text using font and
         // additional parameters
+        DrawTextEx(font, "Thomas Gilb de Moura Guedes",
+                   (Vector2){(float)GetScreenWidth() / 2 - 170, (float)GetScreenHeight() / 2 - 300}, 25, 0, BLACK);
         DrawTextEx(font, "ARKAN0ID: 2D Classic GAME",
                    (Vector2){(float)GetScreenWidth() / 2 - 300, (float)GetScreenHeight() / 2 - 50}, 50, 0, BLACK);
         DrawTextEx(font, "Press ENTER to start the GAME",
@@ -317,9 +322,7 @@ void DrawGame()
                    BLACK);
         DrawTextEx(font, "Press P to pause the GAME", (Vector2){(float)GetScreenWidth() / 2 - 170, screenHeight - 195},
                    25, 0, BLACK);
-        DrawTextEx(font, "Press M to return to MENU", (Vector2){(float)GetScreenWidth() / 2 - 170, screenHeight - 165},
-                   25, 0, BLACK);
-        DrawTextEx(font, "Press ESC to exit the GAME", (Vector2){(float)GetScreenWidth() / 2 - 170, screenHeight - 135},
+        DrawTextEx(font, "Press ESC to exit the GAME", (Vector2){(float)GetScreenWidth() / 2 - 170, screenHeight - 160},
                    25, 0, BLACK);
     }
     else
@@ -361,6 +364,9 @@ void DrawGame()
         {
             if (score == (LINES_OF_BRICKS * BRICKS_PER_LINE))
             {
+                DrawText("PRESS [M] TO GO TO THE MENU",
+                         GetScreenWidth() / 2 - MeasureText("PRESS [ESC..] TO PLAY AGAIN", 20) / 2,
+                         GetScreenHeight() / 4 * 3 + 50, 20, WHITE);
                 DrawText("PRESS [ENTER] TO PLAY AGAIN",
                          GetScreenWidth() / 2 - MeasureText("PRESS [ESC..] TO PLAY AGAIN", 20) / 2,
                          GetScreenHeight() / 4 * 3 - 50, 20, WHITE);
@@ -373,6 +379,9 @@ void DrawGame()
             }
             else
             {
+                DrawText("PRESS [M] TO GO TO THE MENU",
+                         GetScreenWidth() / 2 - MeasureText("PRESS [ESC...] TO PLAY AGAIN", 20) / 2,
+                         GetScreenHeight() / 4 * 3 + 50, 20, WHITE);
                 DrawText("PRESS [ENTER] TO PLAY AGAIN",
                          GetScreenWidth() / 2 - MeasureText("PRESS [ESC..] TO PLAY AGAIN", 20) / 2,
                          GetScreenHeight() / 4 * 3 - 50, 20, WHITE);
