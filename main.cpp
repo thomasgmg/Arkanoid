@@ -307,9 +307,6 @@ void DrawGame()
     if (isMenu)
     {
         ClearBackground(BLUE);
-        // RLAPI void DrawTextEx(Font font, const char *text, Vector2 position,
-        // float fontSize, float spacing, Color tint); // Draw text using font and
-        // additional parameters
         DrawTextEx(font, "Thomas Gilb de Moura Guedes",
                    (Vector2){(float)GetScreenWidth() / 2 - 170, (float)GetScreenHeight() / 2 - 300}, 25, 0, BLACK);
         DrawTextEx(font, "ARKAN0ID: 2D Classic GAME",
